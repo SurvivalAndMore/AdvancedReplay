@@ -2,6 +2,7 @@ name: AdvancedReplay
 version: ${project.version}
 main: me.jumper251.replay.ReplaySystem
 author: Jumper251
+folia-supported: true
 depend: [ProtocolLib]
 commands:
   replay:
