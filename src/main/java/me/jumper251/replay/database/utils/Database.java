@@ -1,5 +1,7 @@
 package me.jumper251.replay.database.utils;
 
+import java.sql.PreparedStatement;
+
 public abstract class Database {
 
     protected String host;
@@ -25,4 +27,12 @@ public abstract class Database {
     public abstract DatabaseService getService();
 
     public abstract String getDataSourceName();
+
+    public abstract void update(PreparedStatement pst);
+	
+	public abstract void update(String qry);
+
+    public String getDatabase() {
+        return this.database;
+    }
 }

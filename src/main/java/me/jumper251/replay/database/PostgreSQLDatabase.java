@@ -25,7 +25,7 @@ public class PostgreSQLDatabase extends Database {
 		super(host, port, database, user, password);
 
 		this.service = new PostgreSQLService(this, prefix);
-		//new AutoReconnector(ReplaySystem.instance); //TODO: Check if we need this also for PostgreSQL
+		new AutoReconnector(ReplaySystem.instance);
 
 	}
 
@@ -64,6 +64,7 @@ public class PostgreSQLDatabase extends Database {
 		return this.service;
 	}
 
+	@Override
 	public void update(PreparedStatement pst) {
 		try {
 			pst.executeUpdate();
@@ -74,6 +75,7 @@ public class PostgreSQLDatabase extends Database {
 		}
 	}
 	
+	@Override
 	public void update(String qry) {
 		try {
 			Statement st = this.connection.createStatement();
@@ -102,9 +104,6 @@ public class PostgreSQLDatabase extends Database {
 		}catch(SQLException e){
 			return false;
 		}
-	}
-	public String getDatabase() {
-		return database;
 	}
 
 	public Connection getConnection() {
