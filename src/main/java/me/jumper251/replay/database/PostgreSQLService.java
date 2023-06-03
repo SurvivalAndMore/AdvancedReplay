@@ -26,14 +26,13 @@ public class PostgreSQLService extends DatabaseService {
 	}
 	
 	@Override
-	public void createReplayTable() {
-		database.update("CREATE TABLE IF NOT EXISTS " + this.table + " (id VARCHAR(40) PRIMARY KEY UNIQUE, creator VARCHAR(30), duration INT(255), time BIGINT(255), data LONGBLOB)");		
-		
+	public void createReplayTable() {	
+		database.update("CREATE TABLE IF NOT EXISTS " + this.table + " (id VARCHAR(40) PRIMARY KEY, creator VARCHAR(30), duration INT, time BIGINT, data BYTEA)");
 	}
 
 	@Override
 	public void addReplay(String id, String creator, int duration, Long time, byte[] data) throws SQLException {
-		PreparedStatement pst = database.getConnection().prepareStatement("INSERT INTO " + this.table + " (id, creator, duration, time, data) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE creator = ?, duration = ?, time = ?, data = ?");
+		PreparedStatement pst = database.getConnection().prepareStatement("INSERT INTO " + this.table + " (id, creator, duration, time, data) VALUES (?,?,?,?,?) ON CONFLICT (id) DO UPDATE SET creator = ?, duration = ?, time = ?, data = ?");
 		pst.setString(1, id);
 		pst.setString(2, creator);
 		pst.setInt(3, duration);

@@ -119,8 +119,7 @@ public class ConfigManager {
 		RECORD_ENTITIES = cfg.getBoolean("recording.entities.enabled");
 		RECORD_CHAT = cfg.getBoolean("recording.chat.enabled");
 
-		if (STORAGE.toUpperCase()=="POSTGRESQL" || STORAGE.toUpperCase()=="MYSQL") {
-			
+		if (STORAGE.equalsIgnoreCase("POSTGRESQL") || STORAGE.equalsIgnoreCase("MYSQL")) {
 			String host = sqlCfg.getString("host");
 			int port = sqlCfg.getInt("port", 3306);
 			String username = sqlCfg.getString("username");
@@ -128,7 +127,7 @@ public class ConfigManager {
 			String password = sqlCfg.getString("password");
 			String prefix = sqlCfg.getString("prefix", "");
 
-			if (STORAGE=="MYSQL") {
+			if (STORAGE.equalsIgnoreCase("MYSQL")) {
 				MySQLDatabase mysql = new MySQLDatabase(host, port, database, username, password, prefix);
 				DatabaseRegistry.registerDatabase(mysql);
 				DatabaseRegistry.getDatabase().getService().createReplayTable();

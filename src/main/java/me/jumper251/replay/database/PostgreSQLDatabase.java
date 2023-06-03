@@ -25,22 +25,22 @@ public class PostgreSQLDatabase extends Database {
 		super(host, port, database, user, password);
 
 		this.service = new PostgreSQLService(this, prefix);
-		new AutoReconnector(ReplaySystem.instance);
 
 	}
 
 	@Override
 	public String getDataSourceName() {
-		return String.format("jdbc:postgresql://%s:%d/%s?useSSL=false", this.host, this.port, this.database); //TODO: characterEncoding=latin1
+		return String.format("jdbc:postgresql://%s:%d/%s?useSSL=false&tcpKeepAlive=true", this.host, this.port, this.database);
 	}
 
 	@Override
 	public void connect() {
 		try {
+			Class.forName("org.postgresql.Driver");
 			String dsn = this.getDataSourceName();
 			this.connection = DriverManager.getConnection(dsn, this.user, this.password);
 			LogUtils.log("Successfully conntected to PostgreSQL database");
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			LogUtils.log("Unable to connect to PostgreSQL database: " + e.getMessage());
 		}
 	}
