@@ -52,7 +52,7 @@ public class ReplaySystem extends JavaPlugin {
 		ConfigManager.loadConfigs();
 		ReplayManager.register();
 		
-		ReplaySaver.register(ConfigManager.USE_DATABASE ? new DatabaseReplaySaver() : new DefaultReplaySaver());
+		ReplaySaver.register((ConfigManager.STORAGE.equalsIgnoreCase("POSTGRESQL") || ConfigManager.STORAGE.equalsIgnoreCase("MYSQL")) ? new DatabaseReplaySaver() : new DefaultReplaySaver());
 		
 		updater = new Updater();
 		metrics = new Metrics(this, 2188);

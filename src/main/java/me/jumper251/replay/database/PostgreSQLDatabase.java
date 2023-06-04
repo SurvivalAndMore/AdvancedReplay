@@ -16,32 +16,32 @@ import me.jumper251.replay.utils.LogUtils;
 
 
 
-public class MySQLDatabase extends Database {
+public class PostgreSQLDatabase extends Database {
 
 	private Connection connection;
-	private MySQLService service;
+	private PostgreSQLService service;
 	
-	public MySQLDatabase(String host, int port, String database, String user, String password, String prefix) {
+	public PostgreSQLDatabase(String host, int port, String database, String user, String password, String prefix) {
 		super(host, port, database, user, password);
 
-		this.service = new MySQLService(this, prefix);
-		new AutoReconnector(ReplaySystem.instance);
+		this.service = new PostgreSQLService(this, prefix);
 
 	}
 
 	@Override
 	public String getDataSourceName() {
-		return String.format("jdbc:mysql://%s:%d/%s?useSSL=false&characterEncoding=latin1", this.host, this.port, this.database);
+		return String.format("jdbc:postgresql://%s:%d/%s?useSSL=false&tcpKeepAlive=true", this.host, this.port, this.database);
 	}
 
 	@Override
 	public void connect() {
 		try {
+			Class.forName("org.postgresql.Driver");
 			String dsn = this.getDataSourceName();
 			this.connection = DriverManager.getConnection(dsn, this.user, this.password);
-			LogUtils.log("Successfully conntected to MySQL database");
-		} catch (SQLException e) {
-			LogUtils.log("Unable to connect to MySQL database: " + e.getMessage());
+			LogUtils.log("Successfully conntected to PostgreSQL database");
+		} catch (Exception e) {
+			LogUtils.log("Unable to connect to PostgreSQL database: " + e.getMessage());
 		}
 	}
 

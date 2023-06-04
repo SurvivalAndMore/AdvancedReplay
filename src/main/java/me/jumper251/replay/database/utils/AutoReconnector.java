@@ -8,7 +8,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.jumper251.replay.database.DatabaseRegistry;
-import me.jumper251.replay.database.MySQLDatabase;
 
 public class AutoReconnector extends BukkitRunnable{
 
@@ -20,7 +19,7 @@ public class AutoReconnector extends BukkitRunnable{
 	
 	@Override
 	public void run() {
-		MySQLDatabase database = (MySQLDatabase) DatabaseRegistry.getDatabase();
+		Database database = DatabaseRegistry.getDatabase();
 		database.update("USE `"+database.getDatabase()+"`");
 	}
 
