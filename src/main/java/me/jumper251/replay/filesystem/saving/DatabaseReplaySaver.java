@@ -21,6 +21,10 @@ import me.jumper251.replay.utils.fetcher.Consumer;
 public class DatabaseReplaySaver implements IReplaySaver {
 
 	public static HashMap<String, ReplayInfo> replayCache;
+
+	public DatabaseReplaySaver() {
+		this.getReplays();
+	}
 	
 	@Override
 	public void saveReplay(Replay replay) {
