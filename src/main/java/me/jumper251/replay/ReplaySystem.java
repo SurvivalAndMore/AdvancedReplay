@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 
 
+import me.jumper251.replay.database.DatabaseRegistry;
 import me.jumper251.replay.filesystem.ConfigManager;
 import me.jumper251.replay.filesystem.saving.DatabaseReplaySaver;
 import me.jumper251.replay.filesystem.saving.DefaultReplaySaver;
@@ -51,8 +52,14 @@ public class ReplaySystem extends JavaPlugin {
 		
 		ConfigManager.loadConfigs();
 		ReplayManager.register();
-		
-		ReplaySaver.register((ConfigManager.STORAGE.equalsIgnoreCase("POSTGRESQL") || ConfigManager.STORAGE.equalsIgnoreCase("MYSQL")) ? new DatabaseReplaySaver() : new DefaultReplaySaver());
+
+		if (ConfigManager.STORAGE.equalsIgnoreCase("POSTGRESQL") || ConfigManager.STORAGE.equalsIgnoreCase("MYSQL")) {
+			ReplaySaver.register(new DatabaseReplaySaver());
+			DatabaseRegistry.getDatabase().getService().getReplays().stream()
+					.forEach(info -> DatabaseReplaySaver.replayCache.put(info.getID(), info));
+		} else {
+			ReplaySaver.register(new DefaultReplaySaver());
+		}
 		
 		updater = new Updater();
 		metrics = new Metrics(this, 2188);
